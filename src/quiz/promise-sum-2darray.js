@@ -22,18 +22,40 @@ function sum2DArray(arr, rowIdx) {
     });
 }
 
-rowSumPromises = [];
+// rowSumPromises = [];
 
-for (let i = 0; i < array2D.length; i++) {
-    rowSumPromises.push(sum2DArray(array2D, i));
+// for (let i = 0; i < array2D.length; i++) {
+//     rowSumPromises.push(sum2DArray(array2D, i));
+// }
+
+// Promise.all(rowSumPromises)
+// .then((rowSums) => {
+//     let sum = 0;
+//     rowSums.forEach((rowSum) => {
+//         sum += rowSum;
+//     });
+//     console.log(`sum = ${sum}`);
+// })
+// .catch((err) => console.log(`Error: ${err}`));
+
+async function calculateSum() {
+    const rowSumPromises = [];
+    for (let i = 0; i < array2D.length; i++) {
+        rowSumPromises.push(sum2DArray(array2D, i));
+    }
+    try {
+        const rowSums = await Promise.all(rowSumPromises);
+        let sum = 0;
+        rowSums.forEach((rowSum) => {
+            sum += rowSum;
+        });
+        console.log(`sum = ${sum}`);
+        return 'done';
+
+    } catch(err) {
+        console.log(`Error: ${err}`);
+        return 'failed';
+    }
 }
 
-Promise.all(rowSumPromises)
-.then((rowSums) => {
-    let sum = 0;
-    rowSums.forEach((rowSum) => {
-        sum += rowSum;
-    });
-    console.log(`sum = ${sum}`);
-})
-.catch((err) => console.log(`Error: ${err}`));
+calculateSum().then((status) => console.log(status));
